@@ -8,6 +8,10 @@
 *.java~
 *.txt~
 
+# Kafka and zookeeper
+kafka/
+zookeeper/
+
 # Package Files #
 *.jar
 *.war
