@@ -9,6 +9,7 @@
 *.txt~
 .classpath
 .project
+zookeeper.out
 
 # Kafka and zookeeper
 kafka/

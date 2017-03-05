@@ -16,7 +16,7 @@ case ${Sys} in
 				sleep 4
 			;;
 			-E) 
-				echo "Kafka stop..."	
+				echo "Kafka stopping..."	
 				./kafka/bin/kafka-server-stop.sh ./kafka/config/server.properties &
 				sleep 4
 			;;
