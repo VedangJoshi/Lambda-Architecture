@@ -27,4 +27,9 @@ public class GtfsFeedProducer {
 		}
 		producer.close();
 	}
+	
+	void produce(String s) {
+		producer.send(new ProducerRecord<String, String>(topic, s));
+		producer.close();
+	}
 }
