@@ -1,5 +1,9 @@
 package ucsc.cmps278.lambdaArch;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -21,15 +25,31 @@ public class GtfsFeedProducer {
 	}
 
 	// Publish records
-	void produce(HashMap<String, String> msgList) {
-		for (String key : msgList.keySet()) {
-			producer.send(new ProducerRecord<String, String>(topic, key, msgList.get(key)));
+	void produce(String url) {
+		String res = null;
+		try {
+			res = getGTFSFeed(url);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		producer.send(new ProducerRecord<String, String>(topic, res));
 		producer.close();
 	}
-	
-	void produce(String s) {
-		producer.send(new ProducerRecord<String, String>(topic, s));
-		producer.close();
+
+	public String getGTFSFeed(String url) throws Exception {
+		URL obj = new URL(url);
+		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+		con.setRequestMethod("GET");
+
+		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+		String inputLine;
+		StringBuffer response = new StringBuffer();
+
+		while ((inputLine = in.readLine()) != null) {
+			response.append(inputLine);
+		}
+		in.close();
+
+		return response.toString();
 	}
 }
