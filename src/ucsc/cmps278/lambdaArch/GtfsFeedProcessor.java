@@ -6,7 +6,7 @@ public class GtfsFeedProcessor {
 		GtfsAppConfigurer config = new GtfsAppConfigurer();
 		
 		// Create Producer and Consumer
-		GtfsFeedProducer producer = new GtfsFeedProducer("GTFS_FEED_ONE", config.configureKafkaConsumer());
+		GtfsFeedProducer producer = new GtfsFeedProducer("GTFS_FEED_ONE", config.configureKafkaProducer());
 		GtfsFeedConsumer consumer = new GtfsFeedConsumer("GTFS_FEED_ONE", config.configureKafkaConsumer());
 
 		// Publish - Subcribe
@@ -14,10 +14,10 @@ public class GtfsFeedProcessor {
 		System.out.println("Sending 'GET' request to Producer via URL : " + url);
 		
 		try {
-			producer.produce(url);
+			producer.produce(url); 
 			consumer.consume();
 		} catch (Exception e) {
 			System.out.println(e);
-		}
+		} 
 	}
 }
