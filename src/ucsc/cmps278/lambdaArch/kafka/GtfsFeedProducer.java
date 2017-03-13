@@ -32,7 +32,9 @@ public class GtfsFeedProducer {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		producer.send(new ProducerRecord<String, String>(topic, res));
+		//producer.send(new ProducerRecord<String, String>(topic, "test"));
 	}
 
 	public String getGTFSFeed(String url) throws Exception {

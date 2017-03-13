@@ -52,8 +52,4 @@ public class GtfsAppConfigurer {
 	void setEndPointURI(String route, String URI) {
 		routesURI.setRoutes(route, URI);
 	}
-	
-	public String getEndPointURI(String route) {
-		return routesURI.getRoutes(route);
-	}
 }

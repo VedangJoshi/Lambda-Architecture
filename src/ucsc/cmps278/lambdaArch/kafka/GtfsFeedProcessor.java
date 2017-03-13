@@ -1,7 +1,11 @@
 package ucsc.cmps278.lambdaArch.kafka;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 public class GtfsFeedProcessor {
 
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws InterruptedException {
 		GtfsAppConfigurer config = new GtfsAppConfigurer();
 		
@@ -10,13 +14,16 @@ public class GtfsFeedProcessor {
 		GtfsFeedConsumer consumer = new GtfsFeedConsumer("GTFS_FEED_ONE", config.configureKafkaConsumer());
 
 		// Publish - Subcribe
-		String url = config.getEndPointURI("Route_704");
-		System.out.println("Sending 'GET' request to Producer via URL : " + url);
+		HashMap<String, String> routes = new EndPoints().getRoutes();
 		
 		while(true) {
 			Thread.sleep(1000);
 			try {
-				producer.produce(url); 
+				for (Entry<String, String> route : routes.entrySet()) {
+					producer.produce(route.getValue());
+					System.out.println(route.getValue());
+				}
+				
 				consumer.consume();
 			} catch (Exception e) {
 				System.out.println(e);

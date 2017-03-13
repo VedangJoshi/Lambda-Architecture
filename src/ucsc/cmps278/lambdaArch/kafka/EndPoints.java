@@ -7,17 +7,21 @@ import java.util.HashMap;
  *	and populating this map can done later. Keep it in-memory for now.
  */
 public class EndPoints {
-	HashMap<String, String> routes =  new HashMap<>();
+	private HashMap<String, String> routes =  new HashMap<>();
 
 	// Ctor
 	public EndPoints() {
 		// Later on read external configuration files here
-		routes.put("Route_704", "http://api.metro.net/agencies/lametro/routes/704/vehicles/");
+		routes.put("Route_704", "http://api.metro.net/agencies/lametro/routes/704/");
+		routes.put("Route_35", "http://api.metro.net/agencies/lametro/routes/35/");
+		routes.put("Route_111", "http://api.metro.net/agencies/lametro/routes/111/");
+		routes.put("Route_40", "http://api.metro.net/agencies/lametro/routes/40/");
+		routes.put("Route_10", "http://api.metro.net/agencies/lametro/routes/10/");
 	}
 
 	// Get URI
-	public String getRoutes(String route) {
-		return routes.get(route);
+	public HashMap<String, String> getRoutes() {
+		return routes;
 	}
 
 	// Set URI
