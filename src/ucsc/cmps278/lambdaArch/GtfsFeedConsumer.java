@@ -18,7 +18,7 @@ public class GtfsFeedConsumer {
 		this.consumer = new KafkaConsumer<String, String>(prop);
 	}
 	
-	void consume() throws Exception {
+	public void consume() throws Exception {
 		
 		consumer.subscribe(Arrays.asList(topic));
 		while (true)

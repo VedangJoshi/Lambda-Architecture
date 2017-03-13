@@ -25,7 +25,7 @@ public class GtfsFeedProducer {
 	}
 
 	// Publish records
-	void produce(String url) {
+	public void produce(String url) {
 		String res = null;
 		try {
 			res = getGTFSFeed(url);

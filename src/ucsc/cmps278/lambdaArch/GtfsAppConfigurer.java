@@ -15,7 +15,7 @@ public class GtfsAppConfigurer {
 		this.routesURI = new EndPoints();
 	}
 	
-	Properties configureKafkaProducer() {
+	public Properties configureKafkaProducer() {
 		// properties setup
 		Properties prop = new Properties();
 		prop.put("bootstrap.servers", "localhost:9092");
@@ -30,7 +30,7 @@ public class GtfsAppConfigurer {
 		return prop;
 	}
 
-	Properties configureKafkaConsumer() {
+	public Properties configureKafkaConsumer() {
 		// properties setup
 		Properties prop = new Properties();
 		prop.put("bootstrap.servers", "localhost:9092");
@@ -53,7 +53,7 @@ public class GtfsAppConfigurer {
 		routesURI.setRoutes(route, URI);
 	}
 	
-	String getEndPointURI(String route) {
+	public String getEndPointURI(String route) {
 		return routesURI.getRoutes(route);
 	}
 }
