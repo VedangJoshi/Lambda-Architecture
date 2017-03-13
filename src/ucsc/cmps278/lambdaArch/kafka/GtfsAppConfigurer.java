@@ -1,4 +1,4 @@
-package ucsc.cmps278.lambdaArch;
+package ucsc.cmps278.lambdaArch.kafka;
 
 import java.util.Properties;
 

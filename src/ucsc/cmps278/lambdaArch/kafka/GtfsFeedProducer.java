@@ -1,4 +1,4 @@
-package ucsc.cmps278.lambdaArch;
+package ucsc.cmps278.lambdaArch.kafka;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -33,7 +33,6 @@ public class GtfsFeedProducer {
 			e.printStackTrace();
 		}
 		producer.send(new ProducerRecord<String, String>(topic, res));
-		producer.close();
 	}
 
 	public String getGTFSFeed(String url) throws Exception {
