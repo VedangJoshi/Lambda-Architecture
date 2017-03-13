@@ -21,10 +21,9 @@ public class GtfsFeedProcessor {
 			try {
 				for (Entry<String, String> route : routes.entrySet()) {
 					producer.produce(route.getValue());
-					System.out.println(route.getValue());
 				}
 				
-				consumer.consume();
+				//consumer.consume();
 			} catch (Exception e) {
 				System.out.println(e);
 			} 

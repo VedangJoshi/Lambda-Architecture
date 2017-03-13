@@ -18,11 +18,10 @@ public class GtfsFeedConsumer {
 	public GtfsFeedConsumer(String topic, Properties prop) {
 		this.topic = topic;
 		this.consumer = new KafkaConsumer<String, String>(prop);
+		consumer.subscribe(Arrays.asList(topic));
 	}
 
 	public ArrayList<String> consume() throws Exception {
-		consumer.subscribe(Arrays.asList(topic));
-		
 		ConsumerRecords<String, String> records = consumer.poll(100);
 		System.out.println("Number of records: " + records.count());
 

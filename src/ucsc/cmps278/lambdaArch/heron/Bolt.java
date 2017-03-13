@@ -29,11 +29,11 @@ public class Bolt extends BaseRichBolt {
 
 	public void execute(Tuple tuple) {
 		String key = tuple.getString(0);
-
+		
+		System.out.println(tuple.getString(0));
 		tupleCount += 1;
 		if (tupleCount % 100 == 0) {
 			tupleCount = 0;
-			Arrays.toString(countMap.entrySet().toArray());
 		}
 
 		if (countMap.get(key) == null) {
