@@ -1,48 +1,26 @@
 package ucsc.cmps278.lambdaArch.heron;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
-
-import backtype.storm.task.OutputCollector;
-import backtype.storm.task.TopologyContext;
-import backtype.storm.topology.OutputFieldsDeclarer;
-import backtype.storm.topology.base.BaseRichBolt;
-import backtype.storm.tuple.Tuple;
-
 @SuppressWarnings("serial")
-public class Bolt extends BaseRichBolt {
-	private OutputCollector collector;
+public class Bolt implements backtype.storm.topology.IRichBolt {
+	private backtype.storm.task.OutputCollector collector;
 	private Map<String, Integer> countMap;
 	private int tupleCount;
 	private String taskName;
 
 	@SuppressWarnings("rawtypes")
-	public void prepare(Map map, TopologyContext topologyContext, OutputCollector outputCollector) {
+	public void prepare(Map map, backtype.storm.task.TopologyContext topologyContext, backtype.storm.task.OutputCollector outputCollector) {
 		collector = outputCollector;
 		countMap = new HashMap<String, Integer>();
 		tupleCount = 0;
 		taskName = topologyContext.getThisComponentId() + "_" + topologyContext.getThisTaskId();
 	}
 
-	public void execute(Tuple tuple) {
-		String key = tuple.getString(0);
-		
-		System.out.println(tuple.getString(0));
-		tupleCount += 1;
-		if (tupleCount % 100 == 0) {
-			tupleCount = 0;
-		}
-
-		if (countMap.get(key) == null) {
-			countMap.put(key, 1);
-		} else {
-			Integer val = countMap.get(key);
-			countMap.put(key, ++val);
-		}
-
+	@Override
+	public void execute(backtype.storm.tuple.Tuple tuple) {
+		System.out.println("Value: " + tuple.getString(0));
 		collector.ack(tuple);
 	}
 
@@ -50,6 +28,12 @@ public class Bolt extends BaseRichBolt {
 	public void cleanup() {
 	}
 
-	public void declareOutputFields(OutputFieldsDeclarer arg0) {
+	@Override
+	public Map<String, Object> getComponentConfiguration() {
+		return null;
+	}
+
+	@Override
+	public void declareOutputFields(backtype.storm.topology.OutputFieldsDeclarer arg0) {
 	}
 }

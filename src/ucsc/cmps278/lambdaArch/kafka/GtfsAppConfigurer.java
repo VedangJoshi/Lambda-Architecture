@@ -33,6 +33,7 @@ public class GtfsAppConfigurer {
 	public Properties configureKafkaConsumer() {
 		// properties setup
 		Properties prop = new Properties();
+
 		prop.put("bootstrap.servers", "localhost:9092");
 		prop.put("group.id", "test");
 		prop.put("enable.auto.commit", "true");
@@ -46,6 +47,7 @@ public class GtfsAppConfigurer {
 		// For logs from beginning
 		prop.put("auto.offset.reset", "earliest");
 
+		
 		return prop;
 	}
 	

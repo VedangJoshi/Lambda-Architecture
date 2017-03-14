@@ -1,41 +1,39 @@
 package ucsc.cmps278.lambdaArch.heron;
 
-import backtype.storm.Config;
-import backtype.storm.LocalCluster;
-import backtype.storm.StormSubmitter;
-import backtype.storm.topology.TopologyBuilder;
-import backtype.storm.tuple.Fields;
+import java.util.HashMap;
 
-/**
- * This topology demonstrates Storm's stream groupings and multilang capabilities.
- */
+import backtype.storm.LocalCluster;
+import backtype.storm.spout.SchemeAsMultiScheme;
+import backtype.storm.topology.TopologyBuilder;
+import storm.kafka.KafkaSpout;
+import storm.kafka.SpoutConfig;
+import storm.kafka.StringScheme;
+import storm.kafka.ZkHosts;
+
 public class HeronController {
 
-  private HeronController() { }
+	private HeronController() {
+	}
 
-  public static void main(String[] args) throws Exception {
-    TopologyBuilder builder = new TopologyBuilder();
+	public static void main(String[] args) throws Exception {
+		if(args.length < 4) {
+			System.exit(1);
+		}
+		
+		final ZkHosts zkrHosts = new ZkHosts(args[0]);
+		final String kafkaTopic = args[1];
+		final String zkRoot = args[2];
+		final String clientId = args[3];
+		final SpoutConfig kafkaConf = new SpoutConfig(zkrHosts, kafkaTopic, zkRoot, clientId);
+		kafkaConf.scheme = new SchemeAsMultiScheme(new StringScheme());
 
-    builder.setSpout("word", new Spout(), 1);
-    builder.setBolt("count", new Bolt(), 1).fieldsGrouping("word", new Fields("word"));
-
-    Config conf = new Config();
-    conf.setDebug(true);
-
-    if (args != null && args.length > 0) {
-      conf.setNumWorkers(3);
-
-      StormSubmitter.submitTopology(args[0], conf, builder.createTopology());
-    }
-    else {
-      conf.setMaxTaskParallelism(3);
-
-      LocalCluster cluster = new LocalCluster();
-      cluster.submitTopology("word-count", conf, builder.createTopology());
-
-      Thread.sleep(10000);
-
-      cluster.shutdown();
-    }
-  }
+		TopologyBuilder topologyBuilder = new TopologyBuilder();
+		topologyBuilder.setSpout("kafka-spout", new KafkaSpout(kafkaConf), 1);
+		topologyBuilder.setBolt("print-messages", new Bolt()).globalGrouping("kafka-spout");
+		
+		LocalCluster localCluster = new LocalCluster();
+		
+		localCluster.submitTopology("kafka-topology", new HashMap<>(), topologyBuilder.createTopology());
+		Thread.sleep(10000);
+	}
 }

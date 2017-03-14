@@ -13,7 +13,7 @@ public class GtfsFeedProcessor {
 		GtfsFeedProducer producer = new GtfsFeedProducer("GTFS_FEED_ONE", config.configureKafkaProducer());
 		GtfsFeedConsumer consumer = new GtfsFeedConsumer("GTFS_FEED_ONE", config.configureKafkaConsumer());
 
-		// Publish - Subcribe
+		// Publish
 		HashMap<String, String> routes = new EndPoints().getRoutes();
 		
 		while(true) {

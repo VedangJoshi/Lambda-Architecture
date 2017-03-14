@@ -2,7 +2,6 @@ package ucsc.cmps278.lambdaArch.heron;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Random;
 
 import backtype.storm.spout.SpoutOutputCollector;
 import backtype.storm.task.TopologyContext;
@@ -31,20 +30,24 @@ public class Spout extends BaseRichSpout {
 
 		try {
 			list = consumer.consume();
+			Utils.sleep(3000);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		for(int i = 0; i < list.size(); i++) {
+			//System.out.println(list.get(i));
 			collector.emit(new Values(list.get(i)));
 		}
 	}
 
-	public void open(Map<String, Object> arg0, TopologyContext arg1, SpoutOutputCollector arg2) {
-		collector = arg2;
-	}
-
 	public void declareOutputFields(OutputFieldsDeclarer arg0) {
 		arg0.declare(new Fields("word"));
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public void open(Map arg0, TopologyContext arg1, SpoutOutputCollector arg2) {
+		collector = arg2;
 	}
 }
