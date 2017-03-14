@@ -1,5 +1,6 @@
 package ucsc.cmps278.lambdaArch.kafka;
 
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,6 +13,36 @@ import java.util.Properties;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+
+import com.google.gson.Gson;
+
+class BusStop {
+	Double latitude;
+	String display_name;
+	String id;
+	Double longitude;
+	
+	@Override
+	public String toString() {
+		return "latitude = " + latitude + ", display_name = " + display_name + ", "
+							+ "id = " + id + ", longitude = " + longitude + "]";
+	}
+}
+
+class Item {
+	BusStop[] items;
+
+	@Override
+	public String toString() {
+		String res = null;
+		
+		for (BusStop busStop : items) {
+			res += busStop.toString();
+		}
+		return "";
+	}
+}
+
 
 public class GtfsFeedProducer {
 	// Topic Name
@@ -35,11 +66,21 @@ public class GtfsFeedProducer {
 			e.printStackTrace();
 		}
 		
-		//System.out.println(res);
-		producer.send(new ProducerRecord<String, String>(topic, res));
-		//producer.send(new ProducerRecord<String, String>(topic, "test"));
+		producer.send(new ProducerRecord<String, String>(topic, jsonToString(res)));
 	}
 
+	// Convert API response to string
+	private String jsonToString(String res) {
+		Item item = new Gson().fromJson(res, Item.class);
+		String out = "";
+		
+		for (BusStop elem : item.items) {
+			out += elem.toString();
+		}
+		return out;
+	}
+	
+	// Get GTFS feed
 	public String getGTFSFeed(String url) {
 		URL obj = null;
 		try {
