@@ -1,6 +1,5 @@
 package ucsc.cmps278.lambdaArch.kafka;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -39,7 +38,7 @@ class Item {
 		for (BusStop busStop : items) {
 			res += busStop.toString();
 		}
-		return "";
+		return res;
 	}
 }
 
@@ -82,16 +81,16 @@ public class GtfsFeedProducer {
 	
 	// Get GTFS feed
 	public String getGTFSFeed(String url) {
-		URL obj = null;
+		URL urlObj = null;
 		try {
-			obj = new URL(url);
+			urlObj = new URL(url);
 		} catch (MalformedURLException e) {
 			System.out.println(e.getMessage());
 			System.exit(0);
 		}
 		HttpURLConnection con = null;
 		try {
-			con = (HttpURLConnection) obj.openConnection();
+			con = (HttpURLConnection) urlObj.openConnection();
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 			System.exit(0);

@@ -1,21 +1,14 @@
-package ucsc.cmps278.lambdaArch.heron;
+package ucsc.cmps278.lambdaArch.storm;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @SuppressWarnings("serial")
 public class Bolt implements backtype.storm.topology.IRichBolt {
 	private backtype.storm.task.OutputCollector collector;
-	private Map<String, Integer> countMap;
-	private int tupleCount;
-	private String taskName;
 
 	@SuppressWarnings("rawtypes")
 	public void prepare(Map map, backtype.storm.task.TopologyContext topologyContext, backtype.storm.task.OutputCollector outputCollector) {
 		collector = outputCollector;
-		countMap = new HashMap<String, Integer>();
-		tupleCount = 0;
-		taskName = topologyContext.getThisComponentId() + "_" + topologyContext.getThisTaskId();
 	}
 
 	@Override

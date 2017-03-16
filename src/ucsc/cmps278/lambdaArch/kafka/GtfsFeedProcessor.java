@@ -5,17 +5,16 @@ import java.util.Map.Entry;
 
 public class GtfsFeedProcessor {
 
-	@SuppressWarnings("unused")
 	public static void main(String[] args) throws InterruptedException {
 		GtfsAppConfigurer config = new GtfsAppConfigurer();
 		
 		// Create Producer and Consumer
 		GtfsFeedProducer producer = new GtfsFeedProducer("GTFS_FEED_ONE", config.configureKafkaProducer());
-		GtfsFeedConsumer consumer = new GtfsFeedConsumer("GTFS_FEED_ONE", config.configureKafkaConsumer());
 
-		// Publish
+		// Read end points
 		HashMap<String, String> routes = new EndPoints().getRoutes();
 		
+		// Publish
 		while(true) {
 			Thread.sleep(1000);
 			try {
@@ -23,7 +22,6 @@ public class GtfsFeedProcessor {
 					producer.produce(route.getValue());
 				}
 				
-				//consumer.consume();
 			} catch (Exception e) {
 				System.out.println(e);
 			} 

@@ -1,4 +1,4 @@
-package ucsc.cmps278.lambdaArch.heron;
+package ucsc.cmps278.lambdaArch.storm;
 
 import java.util.HashMap;
 
@@ -10,9 +10,9 @@ import storm.kafka.SpoutConfig;
 import storm.kafka.StringScheme;
 import storm.kafka.ZkHosts;
 
-public class HeronController {
+public class StormController {
 
-	private HeronController() {
+	private StormController() {
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -34,6 +34,6 @@ public class HeronController {
 		LocalCluster localCluster = new LocalCluster();
 		
 		localCluster.submitTopology("kafka-topology", new HashMap<>(), topologyBuilder.createTopology());
-		Thread.sleep(10000);
+		Thread.sleep(3000);
 	}
 }
