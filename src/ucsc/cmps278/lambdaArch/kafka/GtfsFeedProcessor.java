@@ -16,7 +16,6 @@ public class GtfsFeedProcessor {
 		
 		// Publish
 		while(true) {
-			Thread.sleep(1000);
 			try {
 				for (Entry<String, String> route : routes.entrySet()) {
 					producer.produce(route.getValue());

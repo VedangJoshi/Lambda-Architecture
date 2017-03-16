@@ -13,7 +13,13 @@ public class Bolt implements backtype.storm.topology.IRichBolt {
 
 	@Override
 	public void execute(backtype.storm.tuple.Tuple tuple) {
-		System.out.println("Value: " + tuple.getString(0));
+		if(Integer.parseInt(tuple.getString(0)) > 108) {
+			System.err.println("Error -> " + tuple.getString(0));
+			collector.ack(tuple);
+			return;
+		}
+		
+		System.out.println("Average_Report_Time: " + tuple.getString(0) + " ");
 		collector.ack(tuple);
 	}
 

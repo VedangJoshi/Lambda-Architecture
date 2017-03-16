@@ -15,33 +15,66 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 
 import com.google.gson.Gson;
 
-class BusStop {
-	Double latitude;
-	String display_name;
-	String id;
-	Double longitude;
-	
+class Vehicle {
+	private int seconds_since_report;
+	private String run_id;
+	private Double longitude;
+	private float heading;
+	private String route_id;
+	private boolean predictable;
+	private Double latitude;
+	private String id;
+
 	@Override
 	public String toString() {
-		return "latitude = " + latitude + ", display_name = " + display_name + ", "
-							+ "id = " + id + ", longitude = " + longitude + "]";
+		return "Vehicle [secondsSinceLastreport=" + seconds_since_report + ", runId=" + run_id + ", latitude="
+				+ latitude + ", longitude=" + longitude + ", heading=" + heading + ", isPredictable=" + predictable
+				+ ", routeId=" + id + "]";
 	}
+
+	public int getSecondsSinceReport() {
+		return seconds_since_report;
+	}
+
+	public String getRunId() {
+		return run_id;
+	}
+
+	public Double getLongitude() {
+		return longitude;
+	}
+
+	public float getHeading() {
+		return heading;
+	}
+
+	public String getRouteId() {
+		return route_id;
+	}
+
+	public boolean isPredictable() {
+		return predictable;
+	}
+
+	public Double getLatitude() {
+		return latitude;
+	}
+	
 }
 
 class Item {
-	BusStop[] items;
+	Vehicle[] items;
 
 	@Override
 	public String toString() {
 		String res = null;
-		
-		for (BusStop busStop : items) {
+
+		for (Vehicle busStop : items) {
 			res += busStop.toString();
 		}
 		return res;
 	}
 }
-
 
 public class GtfsFeedProducer {
 	// Topic Name
@@ -64,21 +97,22 @@ public class GtfsFeedProducer {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		producer.send(new ProducerRecord<String, String>(topic, jsonToString(res)));
 	}
 
 	// Convert API response to string
 	private String jsonToString(String res) {
 		Item item = new Gson().fromJson(res, Item.class);
-		String out = "";
-		
-		for (BusStop elem : item.items) {
-			out += elem.toString();
+		int avg = 0;
+
+		for (Vehicle elem : item.items) {
+			avg += elem.getSecondsSinceReport();
 		}
-		return out;
+
+		return Integer.toString(avg/item.items.length);
 	}
-	
+
 	// Get GTFS feed
 	public String getGTFSFeed(String url) {
 		URL urlObj = null;
@@ -116,7 +150,7 @@ public class GtfsFeedProducer {
 			while ((inputLine = in.readLine()) != null) {
 				response.append(inputLine);
 			}
-			
+
 			in.close();
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
