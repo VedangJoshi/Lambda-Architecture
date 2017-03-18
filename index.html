@@ -1,0 +1,61 @@
+<meta http-equiv="refresh" content="5" >
+<h3>Bus Locations</h3>
+<head>
+<style type="text/css">
+  #map {
+  height: 600px;
+  width: 100%;
+ }
+</style>    
+</head>
+
+<div id="map" style="height: 100px;width: 200px"></div>
+
+<script type="text/javascript">
+  function initMap() {
+
+  var read = new XMLHttpRequest();
+  read.open('GET', 'input.txt', false);
+  read.send();
+
+  var uluru2 = read.responseText + "";  
+  obj = eval(uluru2)
+  var uluru = [];
+
+  for(var i = 0; i < obj.length; i++)
+  {
+    var posObj = eval(obj[i]);
+    var temp = {};
+    temp.lat = posObj.latitude;
+    temp.lng = posObj.longitude;
+    
+    uluru[i] = temp;
+  }
+
+
+  var icon = {
+    url: "http://findicons.com/files/icons/2219/dot_pictograms/256/bus.png", // url
+    scaledSize: new google.maps.Size(20, 20), // scaled size
+    origin: new google.maps.Point(0, 0), // origin
+    anchor: new google.maps.Point(10, 10) // anchor
+  };
+
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 12,
+    center: uluru[0]
+  });
+
+  for (i = 0; i < uluru.length; i++) { 
+    var marker1 = new google.maps.Marker({
+      position: uluru[i],
+      map: map,
+      icon: icon
+    });
+    
+    console.log(uluru[i]);
+  }       
+}
+</script>
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDv38otx-lEdLtMbTjXahCKmYBGK5xo5F8&callback=initMap">
+</script>

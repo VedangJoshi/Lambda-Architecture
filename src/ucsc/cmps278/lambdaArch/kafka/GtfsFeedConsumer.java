@@ -20,7 +20,7 @@ public class GtfsFeedConsumer {
 	}
 
 	public ArrayList<String> consume() throws Exception {
-		ConsumerRecords<String, String> records = consumer.poll(100);
+		ConsumerRecords<String, String> records = consumer.poll(3000);
 		ArrayList<String> values = new ArrayList<>();
 
 		for (ConsumerRecord<String, String> record : records) {

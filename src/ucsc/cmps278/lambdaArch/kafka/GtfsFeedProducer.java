@@ -27,9 +27,9 @@ class Vehicle {
 
 	@Override
 	public String toString() {
-		return "Vehicle [secondsSinceLastreport=" + seconds_since_report + ", runId=" + run_id + ", latitude="
+		return "{secondsSinceLastreport=" + seconds_since_report + ", runId=" + run_id + ", latitude="
 				+ latitude + ", longitude=" + longitude + ", heading=" + heading + ", isPredictable=" + predictable
-				+ ", routeId=" + id + "]";
+				+ ", routeId=" + id + "}";
 	}
 
 	public int getSecondsSinceReport() {
@@ -59,18 +59,18 @@ class Vehicle {
 	public Double getLatitude() {
 		return latitude;
 	}
-	
+
 }
 
-class Item {
+class Vehicles {
 	Vehicle[] items;
 
 	@Override
 	public String toString() {
 		String res = null;
 
-		for (Vehicle busStop : items) {
-			res += busStop.toString();
+		for (Vehicle elem : items) {
+			res += (elem);
 		}
 		return res;
 	}
@@ -103,14 +103,17 @@ public class GtfsFeedProducer {
 
 	// Convert API response to string
 	private String jsonToString(String res) {
-		Item item = new Gson().fromJson(res, Item.class);
-		int avg = 0;
-
+		Vehicles item = new Gson().fromJson(res, Vehicles.class);
+		StringBuffer output = new StringBuffer();
+		
+		output.append("[");
 		for (Vehicle elem : item.items) {
-			avg += elem.getSecondsSinceReport();
+			output.append("{lat:" + elem.getLatitude()).append(",lng:").append(elem.getLongitude() + "}"); 
+			output.append(",");
 		}
-
-		return Integer.toString(avg/item.items.length);
+		output.append("{lat:34.1497, lng:-118.2799}]");
+		
+		return output.toString();
 	}
 
 	// Get GTFS feed

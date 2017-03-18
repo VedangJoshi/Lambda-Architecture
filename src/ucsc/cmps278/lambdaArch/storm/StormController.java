@@ -25,15 +25,13 @@ public class StormController {
 		final String zkRoot = args[2];
 		final String clientId = args[3];
 		final SpoutConfig kafkaConf = new SpoutConfig(zkrHosts, kafkaTopic, zkRoot, clientId);
-		kafkaConf.scheme = new SchemeAsMultiScheme(new StringScheme());
-
+		kafkaConf.scheme = new SchemeAsMultiScheme(new StringScheme());	
 		
 		TopologyBuilder topologyBuilder = new TopologyBuilder();
 		topologyBuilder.setSpout("kafka-spout", new KafkaSpout(kafkaConf), 1);
 		topologyBuilder.setBolt("print-messages", new Bolt()).globalGrouping("kafka-spout");
 		
 		LocalCluster localCluster = new LocalCluster();
-		
 		localCluster.submitTopology("kafka-topology", new HashMap<>(), topologyBuilder.createTopology());
 		Thread.sleep(3000);
 	}
